@@ -58,6 +58,6 @@ plt.show()
 # Write a .json file in the correct format
 input = input[[country,region,density,mortality,GDP]]
 json = input.set_index(country).to_json(orient='index')
-# print(json)
+print(json)
 with open ('input.json', 'w') as f:
     f.write(json)
