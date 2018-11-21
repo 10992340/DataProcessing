@@ -1,0 +1,22 @@
+Milou van Casteren
+minor programmeren
+Questions Javascript intro
+
+1. Explain the difference between the == operator and the === operator.
+
+The == operator compares two values, and considers values to be equal when the value of  both is equal to the other.
+The === operator compares two values, but considers values to be equal only when the values are exactly equal to each other.
+
+2. Explain what a closure is. (Note that JavaScript programs use closures very often)
+
+Closure is a function that calls a local variable that is set in a near scope.
+Calling it from near the scope enables not having to worry about the lifetime of the binding and to use function values in creative ways.
+
+3. Explain what higher order functions are.
+
+Functions that operate on other functions, either by taking them as arguments or by returning them.
+
+4. Explain what a query selector is and give an example line of JavaScript that uses a query selector.
+
+A query selector is used to select elements from HTML. It returns the first element that matches a specified CSS selector in the document. 
+The query selector all function selects all elements taht match the specific CSS selector.
