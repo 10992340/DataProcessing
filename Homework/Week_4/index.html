@@ -1,0 +1,92 @@
+<!-- Milou van Casteren -->
+<!-- minor programmeren -->
+<!-- DataProcessing, week 4 -->
+<!-- D3 Barchart -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <style>
+
+      .bar { fill: blue; }
+      .bar:hover {
+          fill: red;
+        }
+        text {
+          font-family: serif;
+      }
+
+      </style>
+    </head>
+    <body>
+      <script type="text/javascript" src="d3/d3.js"></script>
+      <script type="text/javascript">
+        d3.select("head").append("title").text("Barchart data");
+        d3.select("body").append("title").text("Cost of mental health problems in Europe");
+        d3.select("body").append("p").text("Name: Milou van Casteren");
+        d3.select("body").append("p").text("Student number: 10992340");
+        d3.select("body").append("h1").text("Estimates of total mental health costs over 1960-2016 in The Netherlands");
+
+        var scale = d3.scaleLinear();
+
+        // load in data from json file
+        var list = [];
+        var dataset = d3.json("data.json").then(function(dataset) {
+          dataset.forEach(function(data) {
+            list.push(data.Value)
+          })
+        // set margins
+        var margin = {top:20, right:20, bottom:30, left:40},
+        width = 1160 - margin.left - margin.right,
+        height = 1450 - margin.top - margin.bottom;
+
+        // determine x and y values by scaling
+        var x = d3.scaleBand().rangeRound([0,width]).padding(0.1);
+        var y = d3.scaleLinear().rangeRound([height,0]);
+
+
+        //Create SVG element
+        var svg = d3.select("body")
+          .append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // set x domain and y domain
+        x.domain(dataset.map(function(d) {return d.TIME;}));
+        y.domain([0, d3.max(dataset, function(d) {return d.Value;})]);
+
+        // describe and add bars
+        svg.selectAll(".bar")
+          .data(dataset)
+          .enter()
+          .append("rect")
+          .attr("class", "bar")
+          .attr("x", function(d) { return x(d.TIME); })
+          .attr("width", x.bandwidth())
+          .attr("y", function(d) { return y(d.Value); })
+          .attr("height", function(d) { return height - y(d.Value); });
+
+        // add x axis
+        svg.append("g")
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(x));
+
+        // add y axis
+        svg.append("g")
+          .call(d3.axisLeft(y));
+
+        // add name y axis
+        svg.append("text")
+         .attr("transform", "rotate(-90)")
+         .attr("y", 6)
+         .attr("dy", "0.71em")
+         .attr("text-anchor", "end")
+         .text("Value cost in Euros");
+
+        });
+      </script>
+    </body>
+</html>
