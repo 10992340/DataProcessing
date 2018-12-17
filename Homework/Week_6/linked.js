@@ -26,6 +26,7 @@ var countries = [];
 var all_countries = [];
 var requests = [d3.json("countries.json"), d3.json("linked.json")];
 
+// Load data
 Promise.all(requests).then(function(res) {
     makeMap(res[0], res[1])
 }).catch(function(d){
@@ -42,6 +43,7 @@ function makeMap(json, data){
     countries.push(key)
   }
 
+  // Create tooltip
   var tool_tip = d3.tip()
       .attr("class", "d3-tip")
       .offset([-8, 0])
@@ -61,6 +63,7 @@ function makeMap(json, data){
       .attr("fill", function(d){ return "rgba(8, 81, 156, 0.6)" })
       .on('mouseover', tool_tip.show)
       .on('mouseout', tool_tip.hide)
+      // Clicking on a country refers to function makeBarchart
       .on("click", function(d) {
         makeBarchart(d.properties.admin, data)
       });
@@ -68,7 +71,8 @@ function makeMap(json, data){
 
   function makeBarchart(country, data){
 
-    d3.select("bars").remove();
+    d3.selectAll("#bars").remove();
+    d3.selectAll("#titlebarchart").select("h1").remove();
     keys = Object.keys(data[country])
     values = [];
 
@@ -97,6 +101,7 @@ function makeMap(json, data){
       width = 1200 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
+    // Create svg
     var svg = d3.select("#barchart")
                   .append("svg")
                   .attr("id", "bars")
@@ -109,6 +114,7 @@ function makeMap(json, data){
     d3.select("#titlebarchart")
         .append("h1")
         .text(country)
+
     // Set the ranges
     var x = d3.scaleBand()
                 .range([0, width])
@@ -122,6 +128,7 @@ function makeMap(json, data){
              return d;
      })]);
 
+     // Create tooltip
      var tool_tip = d3.tip()
                         .attr("class", "d3-tip")
                         .offset([-8, 0])
@@ -153,7 +160,7 @@ function makeMap(json, data){
       svg.append("g")
           .call(d3.axisLeft(y));
 
-          // text label for the y axis
+      // text label for the y axis
       svg.append("text")
           .attr("transform", "rotate(-90)")
           .attr("y", 0 - margin.left)
